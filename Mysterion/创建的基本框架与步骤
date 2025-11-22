@@ -1,0 +1,53 @@
+1.创建结构
+    java (三层构架(表示层/业务逻辑层/数据访问层))/启动类
+    {
+    controller(控制台)-表示层--专门处理用户交互和请求转发/
+    service(测试类)-业务逻辑层--专注业务逻辑实现/
+    mapper(映射)-数据访问层--专门负责数据持久化操作/
+    entity(实体类)-跨层使用（主要在业务逻辑层和数据访问层)--定义数据模型
+    XxxApplication(启动类)-协同作用--负责初始化和启动整个应用程序
+    }
+
+    resources(映射层)/配置文件
+    {
+    mapper(映射)
+        Xxxmapper.xml--XX相关的SQL映射配置
+    application.yml(核心配置文件)--服务器配置-数据源配置-MyBatis配置-其他配置等
+    }
+
+    项目根目录
+    ├── src/main/java
+    │   └── com.mysterion
+    │       ├── controller        (表示层)
+    │       ├── service           (业务逻辑层)
+    │       ├── mapper            (数据访问层)
+    │       └── entity            (实体类)
+    ├── src/main/resources
+    │   └── com.mysterion
+    │       └── mapper
+    │           ├── XxxMapper.xml
+    └── src/main/resources/application.yml
+
+
+    三层架构中数据流向：
+    controller → service → mapper接口 → XxxMapper.xml → 数据库
+                    ↑           ↓
+                业务逻辑    SQL执行
+
+
+2.配置步骤
+    配置pom.xml()           --项目依赖管理(SpringBoot管理/MyBatis管理/数据库驱动管理/其他必要)
+    配置application.yml()   --核心配置文件(服务器端口配置/数据源配置/MyBatis配置/其他组件配置)
+    配置XxxMapper()         --SQL映射配置(定义具体的SQL语句/配置参数映射/配置结果映射)
+    配置java(){
+        创建实体类(entity)
+        创建Mapper接口
+        创建Service类
+        创建Controller类
+    }
+    依赖优先：必须先配置pom.xml，否则其他配置无法生效
+    配置顺序：application.yml → XxxMapper.xml → Java代码
+    路径匹配：确保XML文件路径与application.yml中的配置一致
+
+
+

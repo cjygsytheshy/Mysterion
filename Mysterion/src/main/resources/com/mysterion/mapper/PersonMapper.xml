@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mysterion.mapper.PersonMapper">
+    <!--根据仓库名和出库量来算结存-->
+    <select id="calStockBy" resultType="com.mysterion.entity.pojo.Person">
+        select warehouse_name                                                       warehouseName,
+               case when w.stock >= #{restock} then #{restock} else w.stock end     restock,
+               case when w.stock >= #{restock} then w.stock - #{restock} else 0 end balance
+        from warehouse w
+        where w.warehouse_name = #{warehouseName};
+    </select>
+
+    <!--对仓库按照库存倒序排列查询-->
+    <select id="list" resultType="com.mysterion.entity.pojo.Person">
+        select *
+        from warehouse
+        order by stock desc
+    </select>
+    <select id="findByCondition" resultType="com.mysterion.entity.pojo.Person">
+        select * from warehouse
+        <where>
+            <if  test="warehouseName!=null and warehouseName!=''">
+                warehouse_name like concat('%',#{warehouseName},'%')
+            </if>
+        </where>
+    </select>
+</mapper>
